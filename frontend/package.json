@@ -77,6 +77,14 @@
             ".tsx"
           ]
         }
+      ],
+      "react/prop-types": [
+        2,
+        {
+          "ignore": [
+            "children"
+          ]
+        }
       ]
     }
   },
