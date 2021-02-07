@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Nav from './Nav';
 
 const Logo = styled.h1`
-  background-color: red;
+  background-color: var(--red, red);
   transform: skew(-7deg);
   a {
     text-decoration: none;
