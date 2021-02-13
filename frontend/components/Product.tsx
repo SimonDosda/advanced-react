@@ -17,7 +17,7 @@ export default function Product({ product }: { product: ProductItem }) {
   );
 }
 
-interface ProductItem {
+export interface ProductItem {
   id: string;
   name: string;
   price: number;
