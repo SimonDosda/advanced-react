@@ -35,11 +35,11 @@ export default function Header() {
         <Logo>
           <Link href="/">Ivie A.</Link>
         </Logo>
+        <Nav />
       </div>
       <div className="sub-bar">
         <p>Search</p>
       </div>
-      <Nav />
     </HeaderStyles>
   );
 }
