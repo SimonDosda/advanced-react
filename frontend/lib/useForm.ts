@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function useForm(initial = {}) {
+export default function useForm<T>(initial: T) {
   const [inputs, setInputs] = useState(initial);
 
   function handleChange(e) {
@@ -9,7 +9,7 @@ export default function useForm(initial = {}) {
       value = parseInt(value);
     }
     if (type === 'file') {
-      value[0] = e.target.files;
+      [value] = e.target.files;
     }
     setInputs({
       ...inputs,
