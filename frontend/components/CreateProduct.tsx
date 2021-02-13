@@ -4,6 +4,7 @@ import DisplayError from './ErrorMessage';
 import { ALL_PRODUCTS_QUERY } from './Products';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/client';
+import Router from 'next/router';
 
 interface Inputs {
   image: File | null;
@@ -43,7 +44,7 @@ export default function CreateProduct() {
     price: 10,
     description: 'trop cool',
   });
-  const [createProduct, { loading, error, data }] = useMutation(
+  const [createProduct, { loading, error }] = useMutation(
     CREATE_PRODUCT_MUTATION,
     {
       variables: inputs,
@@ -54,8 +55,12 @@ export default function CreateProduct() {
     <Form
       onSubmit={async (e) => {
         e.preventDefault();
-        await createProduct();
+        const { data } = await createProduct();
+        console.log(data);
         clearForm();
+        Router.push({
+          pathname: `/product/${data.createProduct.id}`,
+        });
       }}
     >
       <DisplayError error={error} />
