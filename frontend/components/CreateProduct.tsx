@@ -1,6 +1,7 @@
 import useForm from '../lib/useForm';
 import Form from '../atoms/Form';
 import DisplayError from './ErrorMessage';
+import { ALL_PRODUCTS_QUERY } from './Products';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/client';
 
@@ -42,15 +43,18 @@ export default function CreateProduct() {
     price: 10,
     description: 'trop cool',
   });
-  const [
-    createProduct,
-    { loading, error, data },
-  ] = useMutation(CREATE_PRODUCT_MUTATION, { variables: inputs });
+  const [createProduct, { loading, error, data }] = useMutation(
+    CREATE_PRODUCT_MUTATION,
+    {
+      variables: inputs,
+      refetchQueries: [{ query: ALL_PRODUCTS_QUERY }],
+    }
+  );
   return (
     <Form
       onSubmit={async (e) => {
         e.preventDefault();
-        const res = await createProduct();
+        await createProduct();
         clearForm();
       }}
     >
