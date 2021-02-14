@@ -46,9 +46,7 @@ export default function UpdateProduct({ id }) {
   const { data, error, loading } = useQuery(GET_PRODUCT_QUERY, {
     variables: { id },
   });
-  const { inputs, handleChange } = useForm<Inputs>({
-    ...data?.Product,
-  });
+  const { inputs, handleChange } = useForm<Inputs>(data?.Product || {});
   const [
     updateProduct,
     { loading: updateLoading, error: updateError },
@@ -59,7 +57,6 @@ export default function UpdateProduct({ id }) {
     <Form
       onSubmit={async (e) => {
         e.preventDefault();
-        console.log(inputs);
         await updateProduct({
           variables: { id, ...inputs },
           refetchQueries: [{ query: ALL_PRODUCTS_QUERY }],
