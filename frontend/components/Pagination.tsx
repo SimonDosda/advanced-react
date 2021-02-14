@@ -16,14 +16,14 @@ const PAGINATION_QUERY = gql`
 
 export default function Pagination({ page }) {
   const { error, loading, data } = useQuery(PAGINATION_QUERY);
-  const { count } = data?._allProductsMeta;
-  const pageCount = Math.ceil(count / perPage);
   if (loading) {
     return <p>Loading...</p>;
   }
   if (error) {
     return <DisplayError error={error} />;
   }
+  const { count } = data?._allProductsMeta;
+  const pageCount = Math.ceil(count / perPage);
   return (
     <>
       <Head>
