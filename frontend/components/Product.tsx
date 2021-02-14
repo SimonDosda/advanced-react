@@ -3,6 +3,7 @@ import Item from '../atoms/ItemStyles';
 import Title from '../atoms/Title';
 import PriceTag from '../atoms/PriceTag';
 import formatMoney from '../lib/formatMoney';
+import DeleteProduct from './DeleteProduct';
 
 export default function Product({ product }: { product: ProductItem }) {
   return (
@@ -24,6 +25,7 @@ export default function Product({ product }: { product: ProductItem }) {
         >
           Edit
         </Link>
+        <DeleteProduct id={product.id}>Delete</DeleteProduct>
       </div>
     </Item>
   );
