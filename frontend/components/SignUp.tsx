@@ -3,53 +3,59 @@ import Form from '../atoms/Form';
 import useForm from '../lib/useForm';
 import { CURRENT_USER_QUERY } from './User';
 import Error from './ErrorMessage';
+import { SIGNIN_MUTATION } from './SignIn';
 
-export const SIGNIN_MUTATION = gql`
-  mutation SIGNIN_MUTATION($email: String!, $password: String!) {
-    authenticateUserWithPassword(email: $email, password: $password) {
-      ... on UserAuthenticationWithPasswordSuccess {
-        item {
-          id
-          email
-          name
-        }
-        sessionToken
-      }
-      ... on UserAuthenticationWithPasswordFailure {
-        code
-        message
-      }
+const SIGNUP_MUTATION = gql`
+  mutation SIGNUP_MUTATION(
+    $name: String!
+    $email: String!
+    $password: String!
+  ) {
+    createUser(data: { name: $name, email: $email, password: $password }) {
+      id
+      email
+      name
     }
   }
 `;
 
-export default function SignIn() {
+export default function SignUp() {
   const { inputs, handleChange, resetForm } = useForm({
+    name: '',
     email: '',
     password: '',
   });
-  const [signin, { data }] = useMutation(SIGNIN_MUTATION, {
+  const [signup, { error }] = useMutation(SIGNUP_MUTATION, {
+    variables: inputs,
+  });
+  const [signin] = useMutation(SIGNIN_MUTATION, {
     variables: inputs,
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await signin();
-    if (
-      res.data?.authenticateUserWithPassword?.__typename !==
-      'UserAuthenticationWithPasswordFailure'
-    ) {
+    await signup();
+    if (!error) {
       resetForm();
+      await signin();
     }
   };
-  const error =
-    data?.authenticateUserWithPassword?.__typename ===
-    'UserAuthenticationWithPasswordFailure'
-      ? data?.authenticateUserWithPassword
-      : null;
   return (
     <Form method="post" onSubmit={handleSubmit}>
-      <h2>Sign Into your Account</h2>
+      <h2>Create an Account</h2>
+      <fieldset>
+        <label htmlFor="name">
+          Name
+          <input
+            type="text"
+            name="name"
+            placeholder="name"
+            autoComplete="name"
+            value={inputs.name}
+            onChange={handleChange}
+          />
+        </label>
+      </fieldset>
       <fieldset>
         <label htmlFor="email">
           Email
@@ -76,7 +82,7 @@ export default function SignIn() {
           />
         </label>
       </fieldset>
-      <button type="submit">Sign In</button>
+      <button type="submit">Sign Up</button>
       <Error error={error} />
     </Form>
   );
