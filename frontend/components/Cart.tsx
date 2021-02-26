@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import CartStyles from '../atoms/CartStyles';
+import CloseButton from '../atoms/CloseButton';
 import Supreme from '../atoms/Supreme';
 import calcTotalPrice from '../lib/calcTotalPrice';
+import { useCart } from '../lib/cartState';
 import formatMoney from '../lib/formatMoney';
-import Product from './Product';
 import { CartItemT, useUser } from './User';
 
 const CartItemStyles = styled.li`
@@ -43,13 +44,15 @@ function CartItem({ cartItem }: { cartItem: CartItemT }) {
 
 export default function Cart() {
   const user = useUser();
+  const { cartOpen, closeCart } = useCart();
   if (!user) {
     return <p>please log in</p>;
   }
   return (
-    <CartStyles open={true}>
+    <CartStyles open={cartOpen}>
       <header>
         <Supreme>{user.name}'s cart</Supreme>
+        <CloseButton onClick={closeCart}>Close</CloseButton>
       </header>
       <ul>
         {user.cart.map((cartItem) => (
