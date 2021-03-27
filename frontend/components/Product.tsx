@@ -4,6 +4,7 @@ import Title from '../atoms/Title';
 import PriceTag from '../atoms/PriceTag';
 import formatMoney from '../lib/formatMoney';
 import DeleteProduct from './DeleteProduct';
+import AddToCart from './AddToCart';
 
 export default function Product({ product }: { product: ProductItem }) {
   return (
@@ -14,7 +15,7 @@ export default function Product({ product }: { product: ProductItem }) {
       </Title>
       <PriceTag>{formatMoney(product.price)}</PriceTag>
       <p>{product.description}</p>
-      <div className="buttonList">
+      <div className='buttonList'>
         <Link
           href={{
             pathname: 'update',
@@ -26,6 +27,7 @@ export default function Product({ product }: { product: ProductItem }) {
           Edit
         </Link>
         <DeleteProduct id={product.id}>Delete</DeleteProduct>
+        <AddToCart id={product.id} />
       </div>
     </Item>
   );
