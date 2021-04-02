@@ -6,12 +6,13 @@ import calcTotalPrice from '../lib/calcTotalPrice';
 import { useCart } from '../lib/cartState';
 import formatMoney from '../lib/formatMoney';
 import { CartItemT, useUser } from './User';
+import RemoveFromCart from './RemoveFromCart';
 
 const CartItemStyles = styled.li`
   padding: 1rem 0;
   border-bottom: 1px solid var(--lightGrey);
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto auto;
   img {
     margin-right: 1rem;
   }
@@ -22,7 +23,7 @@ const CartItemStyles = styled.li`
 `;
 
 function CartItem({ cartItem }: { cartItem: CartItemT }) {
-  const { product, quantity } = cartItem;
+  const { product, quantity, id } = cartItem;
   return (
     <CartItemStyles>
       <img
@@ -36,8 +37,8 @@ function CartItem({ cartItem }: { cartItem: CartItemT }) {
         <em>
           {quantity} &times; {formatMoney(product.price)}
         </em>
-        `
       </p>
+      <RemoveFromCart id={id} />
     </CartItemStyles>
   );
 }
