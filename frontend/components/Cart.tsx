@@ -21,6 +21,9 @@ const CartItemStyles = styled.li`
   p {
     margin: 0;
   }
+  footer {
+    display: block;
+  }
 `;
 
 function CartItem({ cartItem }: { cartItem: CartItemT }) {
