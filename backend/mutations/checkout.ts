@@ -45,7 +45,7 @@ export default async function checkout(
   const cartItems = user.cart.filter(({ product }) => product);
   const amount = cartItems.reduce(
     (total, cartItem: CartItemCreateInput) =>
-      total + (cartItem.product.price * cartItem.quantity) / 100,
+      total + cartItem.product.price * cartItem.quantity,
     0
   );
   // 3. Create the charge with the Stripe library
@@ -60,6 +60,7 @@ export default async function checkout(
       console.log(err);
       throw new Error(err.message);
     });
+  console.log(charge);
   // 4. Convert the cartitems to orderitems
   // 5. Create the Order and return it
 }
