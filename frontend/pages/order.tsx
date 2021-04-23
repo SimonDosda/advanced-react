@@ -1,13 +1,13 @@
+import { useRouter } from 'next/router';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
 import Order, { OrderT } from '../components/Order';
 import DisplayError from '../components/ErrorMessage';
-import styled from 'styled-components';
 import Head from 'next/head';
 
-const ORDERS_QUERY = gql`
-  query ORDERS_QUERY {
-    orders: allOrders {
+const ORDER_QUERY = gql`
+  query ORDER_QUERY($id: ID!) {
+    order: Order(where: { id: $id }) {
       id
       label
       total
@@ -27,26 +27,20 @@ const ORDERS_QUERY = gql`
   }
 `;
 
-const OrderList = styled.div``;
-
-export default function OrdersPage() {
-  const { data, error, loading } = useQuery(ORDERS_QUERY);
+export default function OrderPage() {
+  const { query } = useRouter();
+  const { data, error, loading } = useQuery(ORDER_QUERY, {
+    variables: { id: query.id },
+  });
   if (loading) return <p>Loading</p>;
   if (error) return <DisplayError error={error} />;
-  const { orders }: { orders: OrderT[] } = data;
+  const { order }: { order: OrderT } = data;
   return (
     <>
       <Head>
-        <title>Ivie A - Orders</title>
+        <title>Ivie A. - {order.label}</title>
       </Head>
-      <OrderList>
-        {data.orders.map((order) => (
-          <div key={order.id}>
-            <Order order={order} />
-            <a href={`order?id=${order.id}`}>See details</a>
-          </div>
-        ))}
-      </OrderList>
+      <Order order={order} />
     </>
   );
 }

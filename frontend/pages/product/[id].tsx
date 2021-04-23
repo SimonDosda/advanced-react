@@ -40,12 +40,8 @@ export default function ProductPage() {
   const { loading, error, data } = useQuery(SINGLE_PRODUCT_QUERY, {
     variables: query,
   });
-  if (loading) {
-    return <p>Loading ...</p>;
-  }
-  if (error) {
-    return <DisplayError error={error} />;
-  }
+  if (loading) return <p>Loading ...</p>;
+  if (error) return <DisplayError error={error} />;
   const product: ProductItem = data.Product;
   return (
     <ProductStyles>
@@ -53,7 +49,7 @@ export default function ProductPage() {
         <title>Ivie A. | {product.name}</title>
       </Head>
       <img src={product.photo.image.publicUrlTransformed} alt={product.name} />
-      <div className="details">
+      <div className='details'>
         <h2>{product.name}</h2>
         <p>{product.description}</p>
       </div>
